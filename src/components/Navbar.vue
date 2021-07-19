@@ -9,13 +9,22 @@
             <span>Python</span>
         </v-toolbar-title>
         <v-spacer></v-spacer>
-        
+
+        <v-btn v-for="link in links" :key="link.text" route :to="link.route"
+          depressed small class="d-none d-sm-flex mx-2" color="teal">
+            <v-icon>{{ link.icon }}</v-icon>
+            <span>{{link.title}}</span>
+        </v-btn>
+
         <a href="https://github.com/osamamhd/high-python-vue">
         <v-btn depressed small class="d-none d-sm-flex" color="cyan darken-3">
             <i class="fab fa-github"></i>
             <span>github</span>
         </v-btn>
         </a>
+
+        
+        
         <v-navigation-drawer v-model="drawer" app>
             <p>test</p>
         </v-navigation-drawer>
@@ -25,6 +34,7 @@
       <v-layout column align-center>
         <v-flex class="mt-5">
           <v-avatar size="100">
+            <!-- python by Danil Polshin from the Noun Project -->
             <img src="/logo.png" alt="">
           </v-avatar>
           <h3 class="subhearding mt-1 teal--text">High Python</h3>
