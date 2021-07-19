@@ -3,8 +3,20 @@ import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
 import vuetify from './plugins/vuetify'
+import VueShowdown from 'vue-showdown'
+import axios from 'axios'
+
+axios.defaults.baseURL = 'http://127.0.0.1:8000/' 
 
 Vue.config.productionTip = false
+Vue.use(VueShowdown, {
+  // set default flavor of showdown
+  flavor: 'github',
+  // set default options of showdown (will override the flavor options)
+  options: {
+    emoji: false,
+  },
+});
 
 new Vue({
   router,
