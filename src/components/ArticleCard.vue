@@ -26,6 +26,7 @@
 
         <v-card-actions>
         <v-btn
+            class="px-1"
             color="teal"
             text small
             @click="postHeart"
@@ -36,7 +37,7 @@
         </v-btn>
 
         <v-btn
-            class="pl-0"
+            class="px-1"
             color="teal"
             text small
             @click="postLike"
@@ -46,7 +47,7 @@
         </v-btn>
 
         <v-btn
-            class="pl-0"
+            class="px-1"
             color="teal"
             text small
             @click="postHappy"
@@ -56,6 +57,7 @@
         </v-btn>
 
         <v-btn
+            class="px-1"
             color="teal"
             text small 
             router :to="article.get_absolute_url"

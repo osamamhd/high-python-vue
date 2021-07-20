@@ -1,0 +1,274 @@
+<template>
+  <div>
+      <v-container>
+          <v-layout row>
+            <v-flex xs12 md9>
+                <v-card class="my-2">
+                   <v-img
+                    class="white--text align-end"
+                    height="150px"
+                    :src="image"
+                    /> 
+                    <v-card-title>{{ title }}</v-card-title>
+                    <v-card-text class="text--primary pb-0">
+                        <div>{{ description }}</div>
+                    </v-card-text>
+                    <v-card-subtitle class="pb-0">
+                    <v-icon small>local_offer</v-icon>
+                    <span v-for="tag in tags" :key="tag">
+                        {{ tag }},
+                    </span>
+                    </v-card-subtitle>
+                    <VueShowdown class="mx-4 my-2"
+                    :markdown= "content"
+                    />
+
+                    <v-card-actions>
+                        <v-btn
+                            color="teal"
+                            text small
+                            @click="postHeart"
+                        >
+                        <v-icon>favorite</v-icon>
+                            <span class="mx-1">{{ heart }}</span>
+                            
+                        </v-btn>
+
+                        <v-btn
+                            class="pl-0"
+                            color="teal"
+                            text small
+                            @click="postLike"
+                        >
+                        <v-icon>thumb_up</v-icon>
+                            <span class="mx-1 px-0">{{ like }}</span>
+                        </v-btn>
+
+                        <v-btn
+                            class="pl-0"
+                            color="teal"
+                            text small
+                            @click="postHappy"
+                        >
+                        <v-icon>emoji_emotions</v-icon>
+                            <span class="mx-1">{{ happy }}</span>
+                        </v-btn>
+                        
+                        <v-btn
+                            class="pl-0"
+                            color="teal"
+                            text small
+                        >
+                        <v-icon>account_circle</v-icon>
+                            <span class="mx-1">{{ created_by }}</span>
+                        </v-btn>
+
+                    </v-card-actions>
+                        
+                </v-card>
+            {{ timeToRead }}
+            <span v-for="comment in comments" :key="comment.id">
+                {{ comment.text }},
+            </span>
+
+            <v-form v-model="valid" id="commentForm">
+                <v-container>
+                <v-row>
+                    <v-col
+                    cols="12"
+                    md="4"
+                    >
+                    <v-text-field
+                        v-model="author"
+                        :rules="authorRules"
+                        :counter="50"
+                        label="Author"
+                        required
+                    ></v-text-field>
+                    </v-col>
+
+                    <v-col
+                    cols="12"
+                    md="6"
+                    >
+                    <v-text-field
+                        v-model="text"
+                        :rules="textRules"
+                        :counter="400"
+                        label="Comment"
+                        required
+                    ></v-text-field>
+                    </v-col>
+
+                    <v-col
+                    class="mt-4"
+                    cols="12"
+                    md="2"
+                    >
+                    <v-btn @click="postComment">
+                        Submit
+                    </v-btn>
+                    </v-col>
+                
+                </v-row>
+                </v-container>
+            </v-form>
+    
+            </v-flex>
+
+            <v-flex lg3>
+              Latest Articles
+            </v-flex>
+          </v-layout>
+          
+        
+      </v-container>
+      
+  </div>
+</template>
+
+<script>
+import axios from 'axios'
+import { VueShowdown } from 'vue-showdown'
+export default {
+    name: 'ArticleDetail',
+
+    data() {
+        return {
+            artilce: [],
+            title:'',
+            description: '',
+            content: '',
+            category: '',
+            image: '',
+            tags: [],
+            heart: '',
+            like: '',
+            happy: '',
+            id: '',
+            created_by: '',
+            created_at: '',
+            timeToRead: '',
+            comments: [],
+
+            // comment form
+            valid: false,
+            author: '',
+            text: '',
+            authorRules: [
+                v => !!v || 'Author is required',
+                v => v.length <= 50 || 'Name must be less than 50 characters',
+            ],
+            textRules: [
+                v => !!v || 'Text is required',
+                v => v.length <= 400 || 'Text must be less than 400 characters',
+            ],
+        }
+    },
+    
+    components: {
+        VueShowdown
+    },
+
+    mounted() {
+        this.getArticleDetail()
+        
+    },
+
+    methods: {
+        async getArticleDetail() {
+            const category_slug = this.$route.params.category_slug
+            const article_slug = this.$route.params.article_slug
+
+            await axios
+                .get(`/api/${category_slug}/${article_slug}/`)
+                .then(response => {
+                    this.artilce = response.data
+                    document.title = this.artilce.title
+                    this.title = this.artilce.title
+                    this.description = this.artilce.description
+                    this.category = this.artilce.category
+                    this.image = this.artilce.get_image
+                    this.tags = this.artilce.tags
+                    this.heart = this.artilce.heart
+                    this.like = this.artilce.like
+                    this.happy = this.artilce.happy
+                    this.id = this.artilce.id
+                    this.created_by = this.artilce.created_by
+                    this.created_at = this.artilce.created_at
+                    this.getContent()
+                    this.getComments()
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        async getContent() {
+            await axios
+                .get(`${this.artilce.get_content_file}`)
+                .then(response => {
+                    this.content = response.data
+                    this.timeToRead = Math.ceil(this.content.length / 150)
+                })
+        },
+        postHeart() {
+            axios
+                .post(`/api/${this.id}/heart/`, this.heart)
+                .then(this.heart++)
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+
+        postLike() {
+            axios
+                .post(`/api/${this.id}/like/`, this.like)
+                .then(this.like++)
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+
+        postHappy() {
+            axios
+                .post(`/api/${this.id}/happy/`, this.happy)
+                .then(this.happy++)
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+
+        async getComments() {
+            await axios
+                .get(`/api/${this.artilce.id}/comments/`)
+                .then(response => {
+                    this.comments = response.data
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        }, 
+
+        postComment() {
+            const formData = {
+                author: this.author,
+                text: this.text
+            }
+            axios
+                .post(`/api/${this.artilce.id}/comments/`, formData)
+                .then(response => {
+                    this.comments.push(response.data)
+                    document.getElementById("commentForm").reset();
+                    this.text = ' '
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        }
+    }
+}
+</script>
+
+<style>
+
+</style>
