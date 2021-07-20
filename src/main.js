@@ -11,10 +11,10 @@ axios.defaults.baseURL = 'http://127.0.0.1:8000/'
 Vue.config.productionTip = false
 Vue.use(VueShowdown, {
   // set default flavor of showdown
-  flavor: 'github',
+  flavor: 'original',
   // set default options of showdown (will override the flavor options)
   options: {
-    emoji: false,
+    emoji: true,
   },
 });
 
