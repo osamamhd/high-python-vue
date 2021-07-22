@@ -1,29 +1,47 @@
 <template>
   <div>
-      <v-container>
+      <v-container class="mt-4 grey--text text--darken-4">
           <v-layout row>
             <v-flex xs12 md9>
-                <v-card class="my-2">
+                <v-card class="mx-md-2">
                    <v-img
                     class="white--text align-end"
                     height="150px"
                     :src="image"
                     /> 
-                    <v-card-title>{{ title }}</v-card-title>
+                    <v-card-title class="d-flex justify-space-between">
+                        <span class="text-uppercase">{{ title }}</span>
+                        <span class="font-weight-light body-2">
+                            <v-icon small class="pb-1">schedule</v-icon>
+                            {{ created_at }}
+                        </span>
+                    </v-card-title>
+
                     <v-card-text class="text--primary pb-0">
                         <div>{{ description }}</div>
                     </v-card-text>
-                    <v-card-subtitle class="pb-0">
-                    <v-icon small>local_offer</v-icon>
-                    <span v-for="tag in tags" :key="tag">
-                        {{ tag }},
-                    </span>
+
+                    <v-card-subtitle class="pb-0 d-flex justify-space-between">
+                        <span>
+                            <v-icon small>local_offer</v-icon>
+                            <span v-for="tag in tags" :key="tag">
+                                {{ tag }},
+                            </span>
+                        </span>
+
+                        <span>
+                            <v-icon small class="pb-1">hourglass_bottom</v-icon>
+                            {{ timeToRead }} mins to read
+                        </span>
+                    
                     </v-card-subtitle>
-                    <VueShowdown class="mx-4 my-2"
+
+                    <VueShowdown class="mx-4 my-2 grey--text text--darken-3"
                     :markdown= "content"
                     />
 
-                    <v-card-actions>
+                    <v-card-actions class="d-flex justify-space-between pb-4">
+                        <span>
                         <v-btn
                             color="teal"
                             text small
@@ -35,7 +53,6 @@
                         </v-btn>
 
                         <v-btn
-                            class="pl-0"
                             color="teal"
                             text small
                             @click="postLike"
@@ -45,7 +62,6 @@
                         </v-btn>
 
                         <v-btn
-                            class="pl-0"
                             color="teal"
                             text small
                             @click="postHappy"
@@ -53,71 +69,90 @@
                         <v-icon>emoji_emotions</v-icon>
                             <span class="mx-1">{{ happy }}</span>
                         </v-btn>
-                        
+                        </span>
+
+                        <span>
                         <v-btn
-                            class="pl-0"
                             color="teal"
                             text small
                         >
                         <v-icon>account_circle</v-icon>
                             <span class="mx-1">{{ created_by }}</span>
                         </v-btn>
-
+                        </span>
                     </v-card-actions>
                         
                 </v-card>
-            {{ timeToRead }}
-            <span v-for="comment in comments" :key="comment.id">
-                {{ comment.text }},
-            </span>
+            
 
-            <v-form v-model="valid" id="commentForm">
-                <v-container>
-                <v-row>
-                    <v-col
-                    cols="12"
-                    md="4"
-                    >
-                    <v-text-field
-                        v-model="author"
-                        :rules="authorRules"
-                        :counter="50"
-                        label="Author"
-                        required
-                    ></v-text-field>
-                    </v-col>
+                <div  v-for="comment in comments" :key="comment.id" class="mx-md-2 my-2 px-2 teal lighten-5  rounded">
+                <v-list-item-content >
+                        <v-list-item-title class="d-flex justify-space-between">
+                            <span>
+                                <v-icon>account_circle</v-icon> {{ comment.author }}
+                            </span>
+                            <span class="font-weight-light body-2">
+                                <v-icon small class="pb-1">schedule</v-icon>
+                                {{ comment.creation_date }}
+                            </span>
+                        </v-list-item-title>
 
-                    <v-col
-                    cols="12"
-                    md="6"
-                    >
-                    <v-text-field
-                        v-model="text"
-                        :rules="textRules"
-                        :counter="400"
-                        label="Comment"
-                        required
-                    ></v-text-field>
-                    </v-col>
+                        <v-list-item-subtitle class="ml-5 ">
+                            <div class="text-wrap caption">
+                                <v-icon small>mode_comment</v-icon> {{ comment.text }}
+                            </div>
+                        
+                        </v-list-item-subtitle>
+                </v-list-item-content>
+                </div>
 
-                    <v-col
-                    class="mt-4"
-                    cols="12"
-                    md="2"
-                    >
-                    <v-btn @click="postComment">
-                        Submit
-                    </v-btn>
-                    </v-col>
-                
-                </v-row>
-                </v-container>
-            </v-form>
-    
+
+                <v-form v-model="valid" id="commentForm">
+                    <v-container>
+                    <v-row>
+                        <v-col
+                        cols="12"
+                        md="4"
+                        >
+                        <v-text-field
+                            v-model="author"
+                            :rules="authorRules"
+                            :counter="50"
+                            label="Author"
+                            required
+                        ></v-text-field>
+                        </v-col>
+
+                        <v-col
+                        cols="12"
+                        md="6"
+                        >
+                        <v-text-field
+                            v-model="text"
+                            :rules="textRules"
+                            :counter="400"
+                            label="Comment"
+                            required
+                        ></v-text-field>
+                        </v-col>
+
+                        <v-col
+                        class="mt-md-4"
+                        cols="12"
+                        md="2"
+                        >
+                        <v-btn @click="postComment">
+                            Submit
+                        </v-btn>
+                        </v-col>
+                    
+                    </v-row>
+                    </v-container>
+                </v-form>
             </v-flex>
 
             <v-flex lg3>
-              Latest Articles
+              <LatestArticles/>
             </v-flex>
           </v-layout>
           
@@ -130,6 +165,7 @@
 <script>
 import axios from 'axios'
 import { VueShowdown } from 'vue-showdown'
+import LatestArticles from '@/components/LatestArticles'
 export default {
     name: 'ArticleDetail',
 
@@ -167,7 +203,8 @@ export default {
     },
     
     components: {
-        VueShowdown
+        VueShowdown,
+        LatestArticles,
     },
 
     mounted() {
@@ -177,6 +214,7 @@ export default {
 
     methods: {
         async getArticleDetail() {
+            
             const category_slug = this.$route.params.category_slug
             const article_slug = this.$route.params.article_slug
 
@@ -195,7 +233,7 @@ export default {
                     this.happy = this.artilce.happy
                     this.id = this.artilce.id
                     this.created_by = this.artilce.created_by
-                    this.created_at = this.artilce.created_at
+                    this.created_at = this.artilce.creation_date
                     this.getContent()
                     this.getComments()
                 })
@@ -208,7 +246,7 @@ export default {
                 .get(`${this.artilce.get_content_file}`)
                 .then(response => {
                     this.content = response.data
-                    this.timeToRead = Math.ceil(this.content.length / 150)
+                    this.timeToRead = Math.ceil(this.content.length / 250)
                 })
         },
         postHeart() {
@@ -268,7 +306,3 @@ export default {
     }
 }
 </script>
-
-<style>
-
-</style>

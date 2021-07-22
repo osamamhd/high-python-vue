@@ -7,14 +7,18 @@
     >
         <v-img
         class="white--text align-end"
-        height="150px"
-        :src="article.get_image"
+        height="100px"
+        :src="article.get_thumbnail"
         >
         <v-card-title>{{ article.title }}</v-card-title>
         </v-img>
 
         <v-card-text class="text--primary pb-0">
         <div>{{ article.description }}</div>
+        <router-link v-bind:to="article.get_absolute_url"
+                    class="text-lg md:text-xl font-bold">
+                  {{ article.title }}
+                </router-link>
         </v-card-text>
 
         <v-card-subtitle class="pb-0">
@@ -63,6 +67,7 @@
             router :to="article.get_absolute_url"
         >
             Read Now
+            
         </v-btn>
         </v-card-actions>
     </v-card>
