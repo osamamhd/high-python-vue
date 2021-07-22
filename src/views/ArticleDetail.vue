@@ -19,6 +19,7 @@
 
                     <v-card-text class="text--primary pb-0">
                         <div>{{ description }}</div>
+                        {{ artilce.get_content_file }}
                     </v-card-text>
 
                     <v-card-subtitle class="pb-0 d-flex justify-space-between">
@@ -241,11 +242,12 @@ export default {
                     console.log(err)
                 })
         },
-        async getContent() {
-            await axios
+        getContent() {
+            axios
                 .get(`${this.artilce.get_content_file}`)
                 .then(response => {
-                    this.content = response.data
+                    localStorage.setItem('content', response.data)
+                    this.content = localStorage.getItem('content')
                     this.timeToRead = Math.ceil(this.content.length / 250)
                 })
         },
