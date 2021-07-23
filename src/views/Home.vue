@@ -1,7 +1,28 @@
 <template>
 <div class="home">
-  <v-container>
-
+  <v-container v-show="isLoading"  style="height: 400px;">
+    <v-row
+        class="fill-height"
+        align-content="center"
+        justify="center"
+    >
+        <v-col
+        class="text-subtitle-1 text-center"
+        cols="12"
+        >
+        Loading Content
+        </v-col>
+        <v-col cols="6">
+        <v-progress-linear
+            color="teal accent-4"
+            indeterminate
+            rounded
+            height="6"
+        ></v-progress-linear>
+        </v-col>
+    </v-row>
+  </v-container>
+  <v-container v-show="!isLoading">
     <h1 class="grey--text text-uppercase">Articles</h1>
     <v-layout row class="my-2">
       <ArticleCard 
@@ -23,7 +44,9 @@ import ArticleCard from '@/components/ArticleCard.vue'
 
     data() {
       return {
-        articles: []
+        articles: [],
+        isLoading: true,
+
       }
     }, 
 
@@ -33,7 +56,7 @@ import ArticleCard from '@/components/ArticleCard.vue'
 
     mounted() {
       this.getArticles()
-      document.title = 'High Python | Articles'
+      document.title = 'HighPython | Articles'
     }, 
 
     methods: {
@@ -42,6 +65,7 @@ import ArticleCard from '@/components/ArticleCard.vue'
           .get('/api/')
           .then(response => {
             this.articles = response.data
+            this.isLoading = false
           })
           .catch(err => {
             console.log(err)

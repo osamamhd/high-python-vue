@@ -1,6 +1,28 @@
 <template>
   <div>
-      <v-container class="mt-4 grey--text text--darken-4">
+      <v-container v-show="isLoading"  style="height: 400px;">
+        <v-row
+            class="fill-height"
+            align-content="center"
+            justify="center"
+        >
+            <v-col
+            class="text-subtitle-1 text-center"
+            cols="12"
+            >
+            Loading Content
+            </v-col>
+            <v-col cols="6">
+            <v-progress-linear
+                color="teal accent-4"
+                indeterminate
+                rounded
+                height="6"
+            ></v-progress-linear>
+            </v-col>
+        </v-row>
+        </v-container>
+      <v-container v-show="!isLoading" class="mt-4 grey--text text--darken-4">
           <v-layout row>
             <v-flex xs12 md9>
                 <v-card class="mx-md-2">
@@ -185,6 +207,7 @@ export default {
             created_at: '',
             timeToRead: '',
             comments: [],
+            isLoading: true,
 
             // comment form
             valid: false,
@@ -221,7 +244,7 @@ export default {
                 .get(`/api/${category_slug}/${article_slug}/`)
                 .then(response => {
                     this.artilce = response.data
-                    document.title = this.artilce.title
+                    document.title = 'Articles | ' + this.artilce.title
                     this.title = this.artilce.title
                     this.content = this.artilce.content
                     this.description = this.artilce.description
@@ -236,6 +259,7 @@ export default {
                     this.created_at = this.artilce.creation_date
                     this.timeToRead = Math.ceil(this.content.length/1500)
                     this.getComments()
+                    this.isLoading = false
                 })
                 .catch(err => {
                     console.log(err)

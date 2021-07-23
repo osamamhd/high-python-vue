@@ -1,6 +1,28 @@
 <template>
-<div class="home">
-  <v-container>
+<div>
+    <v-container v-show="isLoading"  style="height: 400px;">
+        <v-row
+            class="fill-height"
+            align-content="center"
+            justify="center"
+        >
+        <v-col
+        class="text-subtitle-1 text-center"
+        cols="12"
+        >
+        Loading Content
+        </v-col>
+        <v-col cols="6">
+        <v-progress-linear
+            color="teal accent-4"
+            indeterminate
+            rounded
+            height="6"
+        ></v-progress-linear>
+        </v-col>
+    </v-row>
+  </v-container>
+  <v-container v-show="!isLoading">
     <h1 class="grey--text text-uppercase">{{category.title}}</h1>
       
     <v-layout row class="my-2">
@@ -28,6 +50,7 @@ export default {
     data() {
         return {
             category: [],
+            isLoading: true,
         }
     }, 
 
@@ -42,7 +65,8 @@ export default {
                 .get(`/api/${category_slug}/`)
                 .then(response => {
                     this.category = response.data
-                    document.title = this.category.title
+                    document.title = 'Categories | ' + this.category.title
+                    this.isLoading = false
                 })
                 .catch(err => {
                     console.log(err)
