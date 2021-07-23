@@ -15,10 +15,7 @@
 
         <v-card-text class="text--primary pb-0">
         <div>{{ article.description }}</div>
-        <router-link v-bind:to="article.get_absolute_url"
-                    class="text-lg md:text-xl font-bold">
-                  {{ article.title }}
-                </router-link>
+   
         </v-card-text>
 
         <v-card-subtitle class="pb-0">

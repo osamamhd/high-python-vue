@@ -19,7 +19,6 @@
 
                     <v-card-text class="text--primary pb-0">
                         <div>{{ description }}</div>
-                        {{ artilce.get_content_file }}
                     </v-card-text>
 
                     <v-card-subtitle class="pb-0 d-flex justify-space-between">
@@ -29,7 +28,6 @@
                                 {{ tag }},
                             </span>
                         </span>
-
                         <span>
                             <v-icon small class="pb-1">hourglass_bottom</v-icon>
                             {{ timeToRead }} mins to read
@@ -225,6 +223,7 @@ export default {
                     this.artilce = response.data
                     document.title = this.artilce.title
                     this.title = this.artilce.title
+                    this.content = this.artilce.content
                     this.description = this.artilce.description
                     this.category = this.artilce.category
                     this.image = this.artilce.get_image
@@ -235,20 +234,10 @@ export default {
                     this.id = this.artilce.id
                     this.created_by = this.artilce.created_by
                     this.created_at = this.artilce.creation_date
-                    this.getContent()
                     this.getComments()
                 })
                 .catch(err => {
                     console.log(err)
-                })
-        },
-        getContent() {
-            axios
-                .get(`${this.artilce.get_content_file}`)
-                .then(response => {
-                    localStorage.setItem('content', response.data)
-                    this.content = localStorage.getItem('content')
-                    this.timeToRead = Math.ceil(this.content.length / 250)
                 })
         },
         postHeart() {
