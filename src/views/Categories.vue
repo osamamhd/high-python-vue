@@ -1,7 +1,7 @@
 <template>
   <v-container>
 
-    <h1 class="grey--text">Categories</h1>
+    <h1 class="grey--text text-uppercase">Categories</h1>
     <v-layout row class="my-2">
       <CategoryCard 
         v-for="category in categories" 

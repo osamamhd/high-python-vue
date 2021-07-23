@@ -2,7 +2,7 @@
 <div class="home">
   <v-container>
 
-    <h1 class="grey--text">Articles</h1>
+    <h1 class="grey--text text-uppercase">Articles</h1>
     <v-layout row class="my-2">
       <ArticleCard 
         v-for="article in articles" 

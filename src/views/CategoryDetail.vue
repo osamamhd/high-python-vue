@@ -1,8 +1,9 @@
 <template>
 <div class="home">
   <v-container>
-{{category}}
-<v-layout row class="my-2">
+    <h1 class="grey--text text-uppercase">{{category.title}}</h1>
+      
+    <v-layout row class="my-2">
       <ArticleCard 
         v-for="article in category.articles" 
         :key="article.id" 
