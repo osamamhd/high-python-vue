@@ -30,7 +30,7 @@
                         </span>
                         <span>
                             <v-icon small class="pb-1">hourglass_bottom</v-icon>
-                            {{ timeToRead }} mins to read
+                            {{ timeToRead }} min read
                         </span>
                     
                     </v-card-subtitle>
@@ -234,6 +234,7 @@ export default {
                     this.id = this.artilce.id
                     this.created_by = this.artilce.created_by
                     this.created_at = this.artilce.creation_date
+                    this.timeToRead = Math.ceil(this.content.length/1500)
                     this.getComments()
                 })
                 .catch(err => {
