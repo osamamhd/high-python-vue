@@ -10,7 +10,7 @@
         height="100px"
         :src="article.get_thumbnail"
         >
-        <v-card-title>{{ article.title }}</v-card-title>
+        <v-card-title class="pb-0">{{ article.title }}</v-card-title>
         </v-img>
 
         <v-card-text class="text--primary pb-0">

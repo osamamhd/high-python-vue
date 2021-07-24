@@ -16,12 +16,11 @@
             <span>{{link.title}}</span>
         </v-btn>
 
-        <a href="https://github.com/osamamhd/high-python-vue">
-        <v-btn depressed small class="d-none d-sm-flex" color="cyan darken-3">
+        <v-btn depressed small class="d-none d-sm-flex" color="cyan darken-3"
+                href="https://github.com/osamamhd/high-python-vue" target="_blank">
             <i class="fab fa-github"></i>
             <span>github</span>
         </v-btn>
-        </a>
 
         
         
